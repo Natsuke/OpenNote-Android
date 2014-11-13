@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Open Note</string>
+    <string name="label_connect">Page de connexion</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="title_activity_menu">Menu</string>
+    <string name="title_section1">Informatique</string>
+    <string name="title_section2">Comptabilité</string>
+    <string name="title_section3">Marketing</string>
+    <string name="navigation_drawer_open">Ouvrir</string>
+    <string name="navigation_drawer_close">Fermer</string>
+    <string name="action_example">Action</string>
+
+</resources>
