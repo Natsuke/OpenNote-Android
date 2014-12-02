@@ -11,5 +11,6 @@
     <string name="navigation_drawer_open">Ouvrir</string>
     <string name="navigation_drawer_close">Fermer</string>
     <string name="action_example">Action</string>
+    <string name="category_label">Catégories</string>
 
 </resources>
