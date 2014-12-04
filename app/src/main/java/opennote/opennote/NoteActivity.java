@@ -23,6 +23,9 @@ public class NoteActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
+
+        setTitle("Notes");
+
         Intent intent = getIntent();
         int idNote = intent.getIntExtra("id", 0);
         String title = intent.getStringExtra("titre");
@@ -39,7 +42,8 @@ public class NoteActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent mainframe = new Intent();
                 mainframe.setClass(noteList.getContext(), MainFrame.class);
-                mainframe.putExtra("id", ((Model)noteList.getItemAtPosition(position)).getId());
+                mainframe.putExtra("id", ((Model) noteList.getItemAtPosition(position)).getId());
+                mainframe.putExtra("titre", (((Model) noteList.getItemAtPosition(position)).getTitle()));
                 startActivity(mainframe);
             }
         });
@@ -49,7 +53,7 @@ public class NoteActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_note, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 

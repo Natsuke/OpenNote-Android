@@ -34,7 +34,6 @@ public class NoteGet extends AsyncTask<Integer,Void,String[]>{
 
     private Context context;
 
-    private final String link = "https://open-note.ddns.net/android/note_get.php";
     //private final String link = "http://10.99.1.178/note_get.php";
 
     public NoteGet(Context context) {
@@ -51,6 +50,7 @@ public class NoteGet extends AsyncTask<Integer,Void,String[]>{
             String data  =
                     "id=" + category;
 
+            String link = "https://open-note.ddns.net/android/note_get.php";
             URL url = new URL(link);
             trustEveryone();
             URLConnection conn = url.openConnection();
@@ -101,14 +101,8 @@ public class NoteGet extends AsyncTask<Integer,Void,String[]>{
     @Override
     protected void onPostExecute(String[] result){
         TextView textView = (TextView)((Activity)context).findViewById(R.id.textView1);
-        System.out.println(Arrays.asList(result));
-        if (result == null) {
-            textView.setText("NullPointer");
-        }
-        else {
-            ArrayList<String> modelist = new ArrayList<String>();
-            modelist.addAll(Arrays.asList(result));
-            ((NoteActivity)context).updateContent(modelist);
-        }
+        ArrayList<String> modelist = new ArrayList<String>();
+        modelist.addAll(Arrays.asList(result));
+        ((NoteActivity)context).updateContent(modelist);
     }
 }

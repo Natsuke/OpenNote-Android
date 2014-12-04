@@ -12,8 +12,8 @@ public class Model{
 
     private boolean isGroupHeader = false;
 
-    public Model(String title) {
-        this(-1,title,null, 0);
+    public Model() {
+        this(-1, "Catégories",null, 0);
         isGroupHeader = true;
     }
 
@@ -28,7 +28,7 @@ public class Model{
         super();
         this.icon = icon;
         this.title = title;
-        this.counter = counter;
+        this.counter = null;
         this.id = id;
     }
 

@@ -7,5 +7,5 @@
     <string name="password">Password</string>
     <string name="error">Erreur</string>
     <string name="connection_error">Erreur : Login ou mot de passe incorrrect</string>
-    <string name="ok">Ok</string>
+    <string name="ok">@android:string/ok</string>
 </resources>

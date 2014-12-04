@@ -15,5 +15,6 @@
     <string name="title_activity_note">NoteActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_main_frame">MainFrame</string>
+    <string name="search">Rechercher...</string>
 
 </resources>

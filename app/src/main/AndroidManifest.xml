@@ -20,10 +20,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="opennote.opennote.menu"
-            android:label="@string/title_activity_menu" >
-        </activity>
-        <activity
             android:name="opennote.opennote.NoteActivity"
             android:label="@string/title_activity_note" >
         </activity>

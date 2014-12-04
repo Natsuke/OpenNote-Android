@@ -37,7 +37,6 @@ public class CategoryGet extends AsyncTask<Integer,Void,String[]>{
 
     private Context context;
     private int parent_id;
-    private final String link = "https://open-note.ddns.net/android/cat_get.php";
     //private final String link = "http://10.99.1.178/cat_get.php";
 
     public CategoryGet(Context context) {
@@ -60,6 +59,7 @@ public class CategoryGet extends AsyncTask<Integer,Void,String[]>{
                     "id=" + userId;
             data += "&parentId=" + parent_id;
 
+            String link = "https://open-note.ddns.net/android/cat_get.php";
             URL url = new URL(link);
             trustEveryone();
             URLConnection conn = url.openConnection();
@@ -115,17 +115,14 @@ public class CategoryGet extends AsyncTask<Integer,Void,String[]>{
             textView.setText("NullPointer");
         }
         else {
+            ArrayList<String> modelList = new ArrayList<String>();
             if (parent_id == 0) {
-                ArrayList<String> modelList = new ArrayList<String>();
                 modelList.addAll(Arrays.asList(result));
-                System.out.println("Salut toi :" + Arrays.asList(result));
                 ((MyActivity) context).setDataModel(modelList);
             }
             else {
-                ArrayList<String> modelist = new ArrayList<String>();
-                modelist.addAll(Arrays.asList(result));
-                System.out.println("Au revoir !");
-                ((MyActivity)context).updateContent(modelist);
+                modelList.addAll(Arrays.asList(result));
+                ((MyActivity)context).updateContent(modelList);
             }
         }
     }

@@ -33,8 +33,10 @@ public class connectionErrorDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstance) {
+        Bundle arg = this.getArguments();
+        message = arg.getString("message");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.connection_error)
+        builder.setMessage(message)
                 .setTitle(R.string.error)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override

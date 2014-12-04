@@ -26,14 +26,15 @@ public class MainFrame extends Activity {
         Intent intent = getIntent();
 
         int id = intent.getIntExtra("id", 0);
-        System.out.println("J'ai l'id : " + id);
+        String titre = intent.getStringExtra("titre");
+
+        setTitle(titre);
 
         final WebView content = (WebView)findViewById(R.id.webview);
 
         content.getSettings().setBuiltInZoomControls(true);
         content.getSettings().setLoadWithOverviewMode(false);
         content.getSettings().setUseWideViewPort(true);
-        content.getSettings().setJavaScriptEnabled(true);
         final Activity activity = this;
         content.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {

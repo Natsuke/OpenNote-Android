@@ -11,28 +11,30 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:background="@drawable/app_background">
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="110dp"
             android:text="Open Note"
             android:textSize="28dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textColor="#ff85ff4d"
+            android:textColor="#ffffffff"
             android:textAlignment="center"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Liste des sous-catégories :"
             android:id="@+id/textView3"
             style="@android:style/Animation.Translucent"
-            android:textColor="#ff2dffac"
+            android:textColor="#ffffffff"
             android:textStyle="bold|italic" />
 
 
@@ -48,6 +50,9 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#F3F3F3"
-        android:choiceMode="singleChoice"/>
+        android:background="#000000"
+        android:choiceMode="singleChoice"
+        android:divider="#000000"
+        android:dividerHeight="5.0sp"
+        android:paddingLeft="5dp"/>
 </android.support.v4.widget.DrawerLayout>

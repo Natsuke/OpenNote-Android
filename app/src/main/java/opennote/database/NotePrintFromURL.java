@@ -3,18 +3,14 @@ package opennote.database;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -27,8 +23,6 @@ import javax.net.ssl.X509TrustManager;
  */
 public class NotePrintFromURL extends AsyncTask<Integer, Void, String> {
 
-    private final String link = "https://open-note.ddns.net/android/get_path.php";
-
     @Override
     protected String doInBackground(Integer... params) {
         String result[] = new String[] {"", ""};
@@ -37,6 +31,7 @@ public class NotePrintFromURL extends AsyncTask<Integer, Void, String> {
             String data  =
                     "id=" + category;
 
+            String link = "https://open-note.ddns.net/android/get_path.php";
             URL url = new URL(link);
             trustEveryone();
             URLConnection conn = url.openConnection();
@@ -54,7 +49,6 @@ public class NotePrintFromURL extends AsyncTask<Integer, Void, String> {
                 sb.append(line);
             }
             result = sb.toString().split(";");
-            System.out.println(Arrays.asList(result));
         }catch(Exception e){
             System.out.println("Erreur");
         }
@@ -66,7 +60,6 @@ public class NotePrintFromURL extends AsyncTask<Integer, Void, String> {
             path += URLEncoder.encode(result[1], "UTF-8").replace("+", "%20");
 
             URL url = new URL(path);
-            System.out.println(path);
             trustEveryone();
             URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
