@@ -24,6 +24,7 @@ import javax.net.ssl.X509TrustManager;
 
 import opennote.MyActivity;
 import opennote.data.Category;
+import opennote.opennote.NoteActivity;
 import opennote.opennote.R;
 
 /**
@@ -32,17 +33,12 @@ import opennote.opennote.R;
 public class NoteGet extends AsyncTask<Integer,Void,String[]>{
 
     private Context context;
-    private int parent_id;
+
     private final String link = "https://open-note.ddns.net/android/note_get.php";
-    //private final String link = "http://192.168.0.12/cat_get.php";
+    //private final String link = "http://10.99.1.178/note_get.php";
 
     public NoteGet(Context context) {
         this.context = context;
-        this.parent_id = 0;
-    }
-    public NoteGet(Context context, int parent_id) {
-        this.context = context;
-        this.parent_id = parent_id;
     }
 
     protected void onPreExecute(){
@@ -51,10 +47,9 @@ public class NoteGet extends AsyncTask<Integer,Void,String[]>{
     @Override
     protected String[] doInBackground(Integer...params) {
         try{
-            int userId = params[0];
+            int category = params[0];
             String data  =
-                    "id=" + userId;
-            data += "&parentId=" + parent_id;
+                    "id=" + category;
 
             URL url = new URL(link);
             trustEveryone();
@@ -74,7 +69,6 @@ public class NoteGet extends AsyncTask<Integer,Void,String[]>{
                 sb.append(line);
             }
             result = sb.toString().split(";");
-            ((MyActivity)context).setData(new String[]{""});
             return result;
         }catch(Exception e){
             return new String[] {("Exception: " + e.getMessage())};
@@ -107,21 +101,14 @@ public class NoteGet extends AsyncTask<Integer,Void,String[]>{
     @Override
     protected void onPostExecute(String[] result){
         TextView textView = (TextView)((Activity)context).findViewById(R.id.textView1);
+        System.out.println(Arrays.asList(result));
         if (result == null) {
             textView.setText("NullPointer");
         }
         else {
-            if (parent_id == 0) {
-                ArrayList<String> modelList = new ArrayList<String>();
-                modelList.addAll(Arrays.asList(result));
-                System.out.println(Arrays.asList(result));
-                ((MyActivity) context).setDataModel(modelList);
-            }
-            else {
-                ArrayList<String> modelist = new ArrayList<String>();
-                modelist.addAll(Arrays.asList(result));
-                ((MyActivity)context).updateContent(modelist);
-            }
+            ArrayList<String> modelist = new ArrayList<String>();
+            modelist.addAll(Arrays.asList(result));
+            ((NoteActivity)context).updateContent(modelist);
         }
     }
 }

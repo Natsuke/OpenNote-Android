@@ -3,6 +3,9 @@ package opennote.database;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -24,6 +27,7 @@ import javax.net.ssl.X509TrustManager;
 
 import opennote.MyActivity;
 import opennote.data.Category;
+import opennote.navigation.Model;
 import opennote.opennote.R;
 
 /**
@@ -34,7 +38,7 @@ public class CategoryGet extends AsyncTask<Integer,Void,String[]>{
     private Context context;
     private int parent_id;
     private final String link = "https://open-note.ddns.net/android/cat_get.php";
-    //private final String link = "http://192.168.0.12/cat_get.php";
+    //private final String link = "http://10.99.1.178/cat_get.php";
 
     public CategoryGet(Context context) {
         this.context = context;
@@ -114,12 +118,13 @@ public class CategoryGet extends AsyncTask<Integer,Void,String[]>{
             if (parent_id == 0) {
                 ArrayList<String> modelList = new ArrayList<String>();
                 modelList.addAll(Arrays.asList(result));
-                System.out.println(Arrays.asList(result));
+                System.out.println("Salut toi :" + Arrays.asList(result));
                 ((MyActivity) context).setDataModel(modelList);
             }
             else {
                 ArrayList<String> modelist = new ArrayList<String>();
                 modelist.addAll(Arrays.asList(result));
+                System.out.println("Au revoir !");
                 ((MyActivity)context).updateContent(modelist);
             }
         }

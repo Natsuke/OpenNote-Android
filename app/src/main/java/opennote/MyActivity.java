@@ -1,6 +1,7 @@
 package opennote;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -17,11 +18,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import opennote.database.CategoryGet;
+import opennote.database.NoteGet;
 import opennote.database.SignInActivity;
 import opennote.dialog.SignInDialog;
 import opennote.dialog.connectionErrorDialog;
 import opennote.navigation.Model;
 import opennote.navigation.MyAdapter;
+import opennote.opennote.NoteActivity;
 import opennote.opennote.R;
 
 
@@ -51,6 +54,7 @@ public class MyActivity extends FragmentActivity implements SignInDialog.SignInD
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int pos,long id) {
                 if (pos != 0) {
+                    
                     mDrawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
                         @Override
                         public void onDrawerClosed(View drawerView) {
@@ -63,6 +67,18 @@ public class MyActivity extends FragmentActivity implements SignInDialog.SignInD
                     });
                     mDrawerLayout.closeDrawer(navList);
                 }
+            }
+        });
+
+        final ListView content = (ListView)findViewById(R.id.mainContent);
+        content.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent();
+                intent.setClass(content.getContext(), NoteActivity.class);
+                intent.putExtra("id", ((Model) content.getItemAtPosition(position)).getId());
+                intent.putExtra("titre", (((Model) content.getItemAtPosition(position)).getTitle()));
+                startActivity(intent);
             }
         });
 
@@ -139,7 +155,7 @@ public class MyActivity extends FragmentActivity implements SignInDialog.SignInD
         itemList.add(new Model("Catégories"));
         if (data.size() > 1) {
             for (int i = 0; i < data.size(); i = i + 2) {
-                itemList.add(new Model(R.drawable.ic_action_labels, data.get(i), "1", Integer.parseInt(data.get(i + 1))));
+                itemList.add(new Model(R.drawable.ic_action_labels, data.get(i), Integer.parseInt(data.get(i + 1))));
             }
         }
         adapter.notifyDataSetChanged();
@@ -149,13 +165,17 @@ public class MyActivity extends FragmentActivity implements SignInDialog.SignInD
     public void updateContent(ArrayList<String> modelList) {
         ListView content = (ListView) findViewById(R.id.mainContent);
         ArrayList<Model> list = new ArrayList<Model>();
+        System.out.println(modelList.toString());
         if (modelList.size() > 1) {
             for(int i = 0; i < modelList.size(); i = i+2) {
-                list.add(new Model(R.drawable.ic_action_labels, modelList.get(i), "1", Integer.parseInt(modelList.get(i+1))));
+                list.add(new Model(R.drawable.ic_action_labels, modelList.get(i), Integer.parseInt(modelList.get(i+1))));
+                MyAdapter contentAdapter = new MyAdapter(this, list);
+                content.setAdapter(contentAdapter);
             }
         }
-        list.add(new Model(R.drawable.ic_action_view_as_list, "Titre de note", "0", 0));
-        MyAdapter myAdapter = new MyAdapter(this, list);
-        content.setAdapter(myAdapter);
+        else {
+            MyAdapter contentAdapter = new MyAdapter(this, list);
+            content.setAdapter(contentAdapter);
+        }
     }
 }

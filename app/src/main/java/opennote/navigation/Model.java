@@ -16,6 +16,14 @@ public class Model{
         this(-1,title,null, 0);
         isGroupHeader = true;
     }
+
+    public Model(int icon, String title, int id) {
+        super();
+        this.icon = icon;
+        this.title = title;
+        this.id = id;
+    }
+
     public Model(int icon, String title, String counter, int id) {
         super();
         this.icon = icon;

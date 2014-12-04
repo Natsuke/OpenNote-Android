@@ -1,17 +1,20 @@
 package opennote.database;
 
+import android.os.AsyncTask;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-
-import android.content.Context;
-import android.os.AsyncTask;
-import android.support.v4.app.FragmentActivity;
+import java.util.Arrays;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -19,30 +22,21 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
-import opennote.dialog.connectionErrorDialog;
-import opennote.MyActivity;
+/**
+ * Created by Bwandy on 3/12/14.
+ */
+public class NotePrintFromURL extends AsyncTask<Integer, Void, String> {
 
-public class SignInActivity  extends AsyncTask<String,Void,String>{
+    private final String link = "https://open-note.ddns.net/android/get_path.php";
 
-    private Context context;
-    private final String link = "https://open-note.ddns.net/android/sign_in.php";
-    //private final String link = "http://10.99.1.178/sign_in.php";
-
-    public SignInActivity(Context context) {
-        this.context = context;
-    }
-
-    protected void onPreExecute(){
-
-    }
     @Override
-    protected String doInBackground(String... arg0) {
+    protected String doInBackground(Integer... params) {
+        String result[] = new String[] {"", ""};
         try{
-            String username = arg0[0];
-            String password = arg0[1];
+            int category = params[0];
             String data  =
-                    "username=" + username;
-            data += "&password=" + password;
+                    "id=" + category;
+
             URL url = new URL(link);
             trustEveryone();
             URLConnection conn = url.openConnection();
@@ -59,18 +53,50 @@ public class SignInActivity  extends AsyncTask<String,Void,String>{
             {
                 sb.append(line);
             }
-            return sb.toString();
+            result = sb.toString().split(";");
+            System.out.println(Arrays.asList(result));
         }catch(Exception e){
-            return new String("Exception: " + e.getMessage());
+            System.out.println("Erreur");
         }
+
+        StringBuilder sb = new StringBuilder();
+        try {
+            String path = "https://open-note.ddns.net/";
+            path += result[0];
+            path += URLEncoder.encode(result[1], "UTF-8").replace("+", "%20");
+
+            URL url = new URL(path);
+            System.out.println(path);
+            trustEveryone();
+            URLConnection conn = url.openConnection();
+            conn.setDoOutput(true);
+            BufferedReader reader = new BufferedReader
+                    (new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            String line;
+            sb.append("<html><body><div align=\"justify\"");
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            sb.append("</div></body></html>");
+        }catch (Exception e) {
+            System.out.println("Erreur : " + e.getMessage());
+            e.printStackTrace();
+        }
+        return sb.toString();
+    }
+
+    @Override
+    protected void onPostExecute(String list) {
+
     }
 
     private void trustEveryone() {
         try {
-            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier(){
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
                 public boolean verify(String hostname, SSLSession session) {
                     return true;
-                }});
+                }
+            });
             SSLContext context = SSLContext.getInstance("TLS");
             context.init(null, new X509TrustManager[]{new X509TrustManager(){
                 public void checkClientTrusted(X509Certificate[] chain,
@@ -84,23 +110,6 @@ public class SignInActivity  extends AsyncTask<String,Void,String>{
                     context.getSocketFactory());
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void onPostExecute(String result){
-        if (result.equals("KO")) {
-            connectionErrorDialog errorDialog = new connectionErrorDialog();
-            errorDialog.show(((FragmentActivity) context).getSupportFragmentManager(), "Error");
-        } else {
-            ((MyActivity)context).setUserId(Integer.parseInt(result));
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    CategoryGet categoryGet = new CategoryGet(context);
-                    categoryGet.execute( ((MyActivity)context).getUserId() );
-                }
-            }).start();
         }
     }
 }

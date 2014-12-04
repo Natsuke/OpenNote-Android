@@ -3,7 +3,8 @@
     package="opennote.opennote" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -19,8 +20,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".menu"
+            android:name="opennote.opennote.menu"
             android:label="@string/title_activity_menu" >
+        </activity>
+        <activity
+            android:name="opennote.opennote.NoteActivity"
+            android:label="@string/title_activity_note" >
+        </activity>
+        <activity
+            android:name="opennote.opennote.MainFrame"
+            android:label="@string/title_activity_main_frame" >
         </activity>
     </application>
 

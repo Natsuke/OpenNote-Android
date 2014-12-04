@@ -25,6 +25,16 @@
             android:textAlignment="center"
             android:gravity="center" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Liste des sous-catégories :"
+            android:id="@+id/textView3"
+            style="@android:style/Animation.Translucent"
+            android:textColor="#ff2dffac"
+            android:textStyle="bold|italic" />
+
 
         <ListView
             android:layout_width="fill_parent"

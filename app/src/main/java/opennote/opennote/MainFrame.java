@@ -1,31 +1,81 @@
 package opennote.opennote;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.http.SslError;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TabHost;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
-/**
- * Created by Bwandy on 26/11/14.
- */
-public class MainFrame extends Fragment {
+import java.util.concurrent.ExecutionException;
 
-    private TabHost mTabHost;
+import opennote.database.NotePrintFromURL;
 
-    public static Fragment newInstance(Context context, String cat) {
-        MainFrame f = new MainFrame();
-        Bundle args = new Bundle();
-        args.putString("Category", cat);
-        f.setArguments(args);
-        return f;
+
+public class MainFrame extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_frame);
+
+        Intent intent = getIntent();
+
+        int id = intent.getIntExtra("id", 0);
+        System.out.println("J'ai l'id : " + id);
+
+        final WebView content = (WebView)findViewById(R.id.webview);
+
+        content.getSettings().setBuiltInZoomControls(true);
+        content.getSettings().setLoadWithOverviewMode(false);
+        content.getSettings().setUseWideViewPort(true);
+        content.getSettings().setJavaScriptEnabled(true);
+        final Activity activity = this;
+        content.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+                activity.setProgress(progress * 1000);
+            }
+        });
+
+        content.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedSslError(final WebView view, final SslErrorHandler handler, SslError error) {
+                handler.proceed();
+            }
+        });
+        NotePrintFromURL printFromURL = new NotePrintFromURL();
+        try {
+            content.loadData(printFromURL.execute(id).get(), "text/html", "UTF-8");
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.main_frame, null);
-        return root;
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main_frame, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -12,5 +12,8 @@
     <string name="navigation_drawer_close">Fermer</string>
     <string name="action_example">Action</string>
     <string name="category_label">Catégories</string>
+    <string name="title_activity_note">NoteActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main_frame">MainFrame</string>
 
 </resources>
