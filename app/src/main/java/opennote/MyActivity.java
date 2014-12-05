@@ -87,6 +87,7 @@ public class MyActivity extends FragmentActivity implements SignInDialog.SignInD
                 startActivity(intent);
             }
         });
+
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
@@ -181,7 +182,6 @@ public class MyActivity extends FragmentActivity implements SignInDialog.SignInD
     public void updateContent(ArrayList<String> modelList) {
         ListView content = (ListView) findViewById(R.id.mainContent);
         ArrayList<Model> list = new ArrayList<Model>();
-        System.out.println(modelList.toString());
         if (modelList.size() > 1) {
             for(int i = 0; i < modelList.size(); i = i+2) {
                 list.add(new Model(R.drawable.ic_action_labels, modelList.get(i), Integer.parseInt(modelList.get(i+1))));
